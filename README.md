@@ -1,51 +1,52 @@
-import * as React from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+# Style Hub — Premium Men's Salon
 
-import { cn } from "@/lib/utils";
+Production-ready static site (pure HTML/CSS/JS) for a men's salon and barbershop, with dynamic content loaded from Firebase Firestore, an admin panel, favorites, booking, PWA, dark/light theme, and premium animations.
 
-const Accordion = AccordionPrimitive.Root;
+## Structure
 
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item ref={ref} className={cn("border-b", className)} {...props} />
-));
-AccordionItem.displayName = "AccordionItem";
+```
+public/
+├── home.html            # Homepage (hero, trending, popular, reviews)
+├── gallery.html         # Haircuts gallery with filters & search
+├── services.html        # Services + pricing + barbers
+├── booking.html         # Appointment booking with validation
+├── favorites.html       # Saved styles (localStorage + Firestore mirror)
+├── contact.html         # Phone, WhatsApp, hours, map placeholder
+├── about.html           # Story, mission, vision
+├── 404.html             # Not-found page
+├── admin/
+│   ├── login.html
+│   └── index.html       # Dashboard w/ CRUD for every collection
+├── css/
+│   ├── style.css
+│   ├── animations.css
+│   └── responsive.css
+├── js/
+│   ├── firebase.js      # Firebase bridge + demo fallback
+│   ├── main.js          # Nav, theme, toasts, favorites, reveal
+│   ├── layout.js        # Shared nav/footer injection
+│   ├── gallery.js
+│   ├── booking.js
+│   ├── favorites.js
+│   └── admin.js
+├── firebase-config.example.js
+├── manifest.json
+├── sw.js                # Offline service worker (PWA)
+└── assets/
+    └── logo.svg
+```
 
-const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        "flex flex-1 items-center justify-between py-4 text-sm font-medium cursor-pointer transition-all hover:underline text-left [&[data-state=open]>svg]:rotate-180",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-));
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+## Setup
 
-const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-    {...props}
-  >
-    <div className={cn("pb-4 pt-0", className)}>{children}</div>
-  </AccordionPrimitive.Content>
-));
-AccordionContent.displayName = AccordionPrimitive.Content.displayName;
+1. Copy `firebase-config.example.js` to `firebase-config.js` and replace with your real Firebase project values.
+2. Enable Firestore + Auth (email/password) in your Firebase console.
+3. Create the following collections (they will be created on first write, but you can seed them from the admin panel): `users`, `haircuts`, `services`, `bookings`, `favorites`, `reviews`, `barbers`, `settings`, `offers`.
+4. Visit `/admin/login.html` to manage content.
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+Until you add a real Firebase config, the site runs on built-in demo data so you can preview and demo it immediately.
+
+## Notes
+
+- The TanStack `/` route redirects to `/home.html` (the project scaffold owns SSR at `/`; the static site lives under `/public`).
+- Icons are SVG-only; no image URLs are embedded.
+- All editable content (haircuts, services, hours, contact info, reviews, offers) is loaded from Firestore and edited via the admin panel.
