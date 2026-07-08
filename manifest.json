@@ -1,0 +1,13 @@
+{
+  "name": "Style Hub — Premium Men's Salon",
+  "short_name": "Style Hub",
+  "description": "Book premium men's salon appointments online.",
+  "start_url": "/home.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    { "src": "/assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
